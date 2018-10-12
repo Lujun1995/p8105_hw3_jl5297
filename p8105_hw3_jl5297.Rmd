@@ -1,0 +1,22 @@
+---
+title: "p8105_hw3_jl5297"
+author: "JunLu"
+date: "10/11/2018"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.width = 6,
+  fig.asp = .6,
+  out.width = "90%"
+)
+
+library(tidyverse)
+library(patchwork)
+library(p8105.datasets)
+
+theme_set(theme_bw() + theme(legend.position = "bottom"))
+```
+
