@@ -6,13 +6,6 @@ output: github_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  fig.width = 6,
-  fig.asp = .6,
-  out.width = "90%"
-)
-
 library(tidyverse)
 library(patchwork)
 library(p8105.datasets)
@@ -94,7 +87,7 @@ brfss_tidy %>%
      
 For the years 2002, 2006 and 2010, the mean and standard deviation of the proportion of “Excellent” responses across locations in NY decrease over years.     
        
-#### d.Make a five-panel plot that shows, for each response category separately, the distribution of these state-level averages over time.
+#### d. Make a five-panel plot that shows, for each response category separately, the distribution of these state-level averages over time.
 * compute the average proportion in each response category
 * make a five-panel plot
 ```{r average_distribution_plot, fig.width=12, fig.height=6}
@@ -121,3 +114,114 @@ brfss_average %>%
 
 * The disrtibutions of these state-level average in each reponse have a big difference. In most states, "Very good" response tends to have the highest average proportion and "Poor" response tends to have the lowest average proportion among those reponses over time. 
 * The distribution of these state-level averages in one response of different years don't have a big difference.
+
+## Problem 2
+### 1. Load the data
+```{r}
+data(instacart)
+```
+
+### 2. Do some exploration
+* Take a look at the first 6 rows
+* Take a look at each variable name
+* Get the dimension
+* Take a look at each variable in detail
+
+```{r}
+head(instacart)
+
+names(instacart)
+
+dim(instacart)
+
+skimr::skim(instacart)
+```
+
+#### Summarize
+The "instacart" dataset contains `r nrow(instacart)` observations and `r ncol(instacart)` variables, where each observation(row) in the dataset is a product from an order. There is a single order per user in this dataset. And there is no missing value in each variable. There are 4 character variables(aisle, department, eval_set and product_name), 11 integer variables(other varibales). Product_name, aisle, department, order_hour_of_day, order_dow, reordered and add_to_cart_order are key variables.
+
+* `order_id`: order identifier
+* `product_id`: product identifier
+* `add_to_cart_order`: order in which each product was added to cart
+* `reordered`: 1 if this prodcut has been ordered by this user in the past, 0 otherwise
+* `user_id`: customer identifier
+* `eval_set`: which evaluation set this order belongs in (Note that the data for use in this class is exclusively from the “train” eval_set)
+* `order_number`: the order sequence number for this user (1=first, n=nth)
+* `order_dow`: the day of the week on which the order was placed
+* `order_hour_of_day`: the hour of the day on which the order was placed
+* `days_since_prior_order`: days since the last order, capped at 30, NA if order_number=1
+* `product_name`: name of the product
+* `aisle_id`: aisle identifier
+* `department_id`: department identifier
+* `aisle`: the name of the aisle
+* `department`: the name of the department
+
+For example, from the dataset we can know that the Instacart user who has user id 112108 bought a Bulgarian Yogurt in first order from dairy eggs department at 10 o' clock and this order is in yogurt aisle，and he reordered it. 
+
+### 3. Solutions to questions
+#### a. How many aisles are there, and which aisles are the most items ordered from?
+* count the number of aisles
+* count number of each aisle
+```{r}
+# count the number of aisles 
+instacart %>% distinct(aisle) %>% nrow()
+
+# find which aisles are the most items ordered from
+aisles_items = instacart %>% count(aisle) %>% arrange(desc(n))
+aisles_items
+```
+There are 134 aisles and fresh vegetables aisle is the most items ordered from. People tend to order fresh vegetables on Instacart.
+         
+#### b. Make a plot that shows the number of items ordered in each aisle. 
+* Order aisle in number of items
+* flip coordinate system to make it easy to read
+```{r aisle_barplot, fig.height=15, fig.width=10}
+aisles_items  %>% 
+    mutate(aisle = forcats::fct_reorder(aisle, n, .desc = F)) %>% 
+    ggplot(aes(x = aisle, y = n)) +
+    geom_bar(stat = "identity") +
+    labs(
+        title = "The number of items ordered in each aisle",
+        y = "The number of items ordered", 
+        x = "Aisle"
+    ) +
+    coord_flip()
+```
+     
+The number of items ordered in fresh vegetables and fresh fruit are extremely larger than any other aisles. Aisles of daily food tends to have large number of items ordered.   
+
+#### c. Make a table showing the most popular item aisles “baking ingredients”, “dog food care”, and “packaged vegetables fruits”
+* filter, group by aisle and summarize to get mode in each aisle
+```{r}
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+
+instacart %>% 
+    filter(aisle %in% c("baking ingredients", "dog food care", "packaged vegetables fruits")) %>% 
+    group_by(aisle) %>% 
+    summarize(popular_item = getmode(product_name)) %>% 
+    knitr::kable()
+```
+* "Light Brown Sugar" is the most popular item in "baking ingredients" aisle.
+* "Snack Sticks Chicken & Rice Recipe Dog Treats" is the most popular item in "dog food care" aisle.
+* "Organic Baby Spinach" is the most popular item in "packaged vegetables fruits" aisle. 
+
+#### d. Make a table showing the mean hour of the day at which Pink Lady Apples and Coffee Ice Cream are ordered on each day of the week
+* use instacart dataset to filter, group by product_name, summarize to get the mean of order_hour_of_day, and spread to make it readable
+```{r}
+instacart %>% 
+    filter(product_name %in% c("Pink Lady Apples", "Coffee Ice Cream")) %>% 
+    group_by(product_name, order_dow) %>% 
+    summarize(mean_hour = mean(order_hour_of_day)) %>% 
+    spread(key = order_dow, value = mean_hour) %>% 
+    knitr::kable()
+```
+
+* Instacart users tend to order Coffee Ice Cream at afternoon or noon. And on the middle of the week people tend to order Coffee Ice Cream at a relatively late time of the day. 
+* Instacart users tend to order Pink Lady Apples around noon, but on Wednesday people tend to order Pink Lady Apples at a relatively late time around 2 o'clock.
+
+
+
+
