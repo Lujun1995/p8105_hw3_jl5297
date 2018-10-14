@@ -12,8 +12,7 @@ library(p8105.datasets)
 theme_set(theme_bw() + theme(legend.position = "bottom"))
 knitr::opts_chunk$set(
   fig.width = 8,
-  fig.align = 'center',
-  echo = T
+  fig.align = 'center'
 )
 ```
 
