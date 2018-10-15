@@ -166,7 +166,9 @@ The "instacart" dataset contains `r nrow(instacart)` observations and `r ncol(in
 * `aisle`: the name of the aisle
 * `department`: the name of the department
 
-For example, from the dataset we can know that the Instacart user who has user id 112108 bought a Bulgarian Yogurt in first order from dairy eggs department at 10 o' clock and this order is in yogurt aisle，and he reordered it. 
+For example, from the dataset we can know that in the first obsevation the instacart user who has user id 112108 bought a Bulgarian Yogurt in first order from dairy eggs department at 10 o' clock and this order is in yogurt aisle，and he reordered it. 
+
+In the ninth observation, the instacart user who has user id 79431 bought a Grated Pecorino Romano Cheese in first order from dairy eggs department at 18 o' clock and this order is in specialty cheeses aisle. 
 
 ### 3. Solutions to questions
 #### a. How many aisles are there, and which aisles are the most items ordered from?
