@@ -72,7 +72,8 @@ brfss_tidy %>%
     theme(legend.position = "right")
 
 ```
-      
+
+* We can see the tendency of numbers of location observed in each state from this spaghetti plot.  
 * Numbers of locations observed in some states in different years are different. 
 * Notably, the number of locations observed of FL has a big change from 2006 to 2010. Especially in 2007 and 2010, FL has over 40 locations observed. 
 * Some states only have a few locations observed over years (like WI and WV).
@@ -89,8 +90,9 @@ brfss_tidy %>%
     summarize(mean = mean(data_value), std = sd(data_value)) %>% 
     knitr::kable(digits = 2)
 ```
-     
-For the years 2002, 2006 and 2010, the mean and standard deviation of the proportion of “Excellent” responses across locations in NY decrease over years.     
+
+* 2002 has the largest mean of the proportion of “Excellent” responses. 2006 has the smallest mean of the proportion of “Excellent” responses.    
+* For the years 2002, 2006 and 2010, the standard deviation of the proportion of “Excellent” responses across locations in NY decrease over years.     
        
 #### d. Make a five-panel plot that shows, for each response category separately, the distribution of these state-level averages over time.
 * compute the average proportion in each response category
@@ -117,6 +119,7 @@ brfss_average %>%
     theme(axis.text.x = element_text(angle = 60, hjust = 1))
 ```
 
+* From this five-panel plot, we can know distributions of these state-level averages of each response.
 * The disrtibutions of these state-level average in each reponse have a big difference. In most states, "Very good" response tends to have the highest average proportion and "Poor" response tends to have the lowest average proportion among those reponses over time. 
 * The distributions of these state-level averages in one response of different years don't have a big difference.
 
@@ -140,6 +143,8 @@ names(instacart)
 dim(instacart)
 
 skimr::skim(instacart)
+
+str(instacart)
 ```
 
 #### Summarize
@@ -256,6 +261,8 @@ dim(ny_noaa)
 
 # Take a look at each variable in detail
 skimr::skim(ny_noaa)
+
+str(ny_noaa)
 
 # Number and proportion of observations containing NA
 sum(!complete.cases(ny_noaa))
