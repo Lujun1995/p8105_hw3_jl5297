@@ -104,7 +104,7 @@ head(brfss_average)
 
 brfss_average %>% 
     ggplot(aes(x = factor(year), y = average_prop)) +
-    geom_violin(aes(fill = factor(response))) +
+    geom_violin(aes(fill = response)) +
     facet_grid(.~response) +
     stat_summary(fun.y = median, geom = "point", size = 1) +
     labs(
@@ -190,7 +190,7 @@ aisles_items  %>%
         y = "The number of items ordered", 
         x = "Aisle"
     ) +
-    coord_flip()
+    coord_flip() 
 ```
      
 Numbers of items ordered in fresh vegetables and fresh fruit are extremely larger than any other aisles. Aisles of daily food tend to have large number of items ordered.   
@@ -270,7 +270,7 @@ rbind(na_num, na_prop) %>% knitr::kable(digits = 2)
 ```
 
 #### Summarize
-The "ny_noaa" dataset contains `r nrow(ny_noaa)` observations and `r ncol(ny_noaa)` variables, where each row in the dataset is observation data in one day of one weather station in New York state. There are 1 Date variable(date), 3 character variables(id, tmax and tmin) and 3 integer variables(prcp, snow, snwd). And prcp, snow, snwd, tmax, and tmin are key variables. There are a number of NA in this dataset where more than a half rows contains NA. Notably, 44 percent of temperature records(tmin and tmax) are NAs which can be a big issue in analysis.
+The "ny_noaa" dataset contains `r nrow(ny_noaa)` observations and `r ncol(ny_noaa)` variables, where each row in the dataset is observation data in one day of one weather station in New York state. There are 1 Date variable(date), 3 character variables(id, tmax and tmin) and 3 integer variables(prcp, snow, snwd). And prcp, snow, snwd, tmax, and tmin are key variables. There are a number of NA in this dataset where more than a half rows contains NA. Notably, 44 percent of temperature records(tmin and tmax) are NAs which can be a big issue in analysis. (Other NAs proportions: prcp(0.06), snow(0.15) and snwd(0.23))
 
 * `id`: Weather station ID
 * `date`: Date of observation
